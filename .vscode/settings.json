@@ -1,0 +1,8 @@
+{
+    "cmake.buildEnvironment": {
+    },
+    "cmake.configureSettings": {
+        "OpenCV_DIR": "C:\\Users\\ywang2\\Downloads\\opencv\\build",
+        "CMAKE_BUILD_TYPE": "Debug"
+    }
+}
