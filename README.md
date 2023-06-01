@@ -5,7 +5,7 @@ This repo implements some functions to process inputting images and provides a D
 `winget install cmake`
 * make  
 `winget install make`
-* Microsoft Visual Studio 2019 or higher
+* Microsoft Visual Studio 2022(recommended)
 * [OpenCV](https://opencv.org/releases/)
 ## How to build DLL
 1. clone repo to local
