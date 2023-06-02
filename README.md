@@ -15,3 +15,6 @@ This repo implements some functions to process inputting images and provides a D
 4. Build  
   `cd build`  
   `cmake --build . --config Release --verbose`
+# Features
+- [x] Provide the debug infomation and callback function to output the debug msg.
+- [x] Provide the decoder/encoder fucntion for handle the binary data with the Base64.
