@@ -1,10 +1,8 @@
 # ImageProcessModule
 This repo implements some functions to process inputting images and provides a DLL file.
 # Software requirements
-* CMake 3.13 or higher  (install CMake via the powershell CMD)
-`winget install cmake`
-* make  
-`winget install make`
+* CMake 3.13 or higher  (install CMake via the powershell CMD)  
+`winget install cmake`  
 * Microsoft Visual Studio 2022(recommended)
 * [OpenCV](https://opencv.org/releases/)
 ## How to build DLL
