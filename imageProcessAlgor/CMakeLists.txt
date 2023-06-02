@@ -12,8 +12,9 @@ if(OpenCV_FOUND)
     include_directories(${OpenCV_INCLUDE_DIRS})
     
     # Add OpenCV library to project
-    target_link_libraries(Myimageops ${OpenCV_LIBS})
+    target_link_libraries(Myimageops ${OpenCV_LIBS} Crypt32)
 endif()
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Myimageops PROPERTY CXX_STANDARD 20)
 endif()
