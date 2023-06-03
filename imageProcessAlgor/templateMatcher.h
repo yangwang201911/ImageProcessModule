@@ -4,5 +4,5 @@
 #include <iostream>
 extern "C"
 {
-	__declspec(dllexport) int MatchTarget(char *image, int image_size, char *target, int target_size, int &loc_x, int &loc_y);
+	__declspec(dllexport) int MatchTarget(char *image, int imageSize, char *target, int targetSize, int &loc_x, int &loc_y);
 }

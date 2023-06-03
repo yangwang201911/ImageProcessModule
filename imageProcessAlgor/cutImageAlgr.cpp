@@ -40,16 +40,11 @@ extern "C"
 				  data, length);
 		DebugPrint(msg);
 	}
-
 }
 
 __declspec(dllexport) std::string Base64Encoder(char *data, int length)
 {
 	char msg[2048] = "";
-	sprintf_s(msg, sizeof(msg) - strlen(msg), "Function Name:\n\tBase64Encoder\nBrief:\n\tEncode the input string with Base64.\n"
-											  "Parameters:\n\tdata, char*, Pointer. point to the source data;\n\tlength, int, length of the data;\n"
-											  "Return:\n\tvoid\n Argument:\n\tdata = %p\n\tlength = %d\n",
-			  data, length);
 	std::string source(data, length);
 	DWORD binarySize = static_cast<DWORD>(length);
 	LPBYTE pbBinary = reinterpret_cast<LPBYTE>(data);
@@ -64,27 +59,20 @@ __declspec(dllexport) std::string Base64Encoder(char *data, int length)
 	if (!CryptBinaryToString(pbBinary, binarySize, dwFlags,
 							 const_cast<LPTSTR>(encodedData.data()), &stringSize))
 	{
+		sprintf_s(msg, sizeof(msg) - strlen(msg), "Function Name:\n\tBase64Encoder\nBrief:\n\tEncode the input string with Base64.\n"
+												  "Parameters:\n\tdata, char*, Pointer. point to the source data;\n\tlength, int, length of the data;\n"
+												  "Return:\n\tvoid\n Argument:\n\tdata = %p\n\tlength = %d\n",
+				  data, length);
 		sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Encoded result: Failed to decode Base64 data. \nError code: %ld\n", GetLastError());
-	}
-	else
-	{
-		sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Done!\n");
-	}
-	if (s_DebugCallback)
 		DebugPrint(msg);
-	else
-		std::cout << std::string(msg) << std::endl;
+	}
 	return encodedData;
 }
 
 __declspec(dllexport) std::string Base64Decoder(char *data, int length)
 {
 	char msg[2048] = "";
-	sprintf_s(msg, sizeof(msg) - strlen(msg), "Function Name:\n\tBase64Decoder\nBrief:\n\tDecode the input string with Base64.\n"
-											  "Parameters:\n\tdata, char*, Pointer. point to the encoded data;\n\tlength, int, length of the data;\n"
-											  "Return:\n\tvoid\n Argument:\n\tdata = %p\n\tlength = %d\n",
-			  data, length);
-	// Base64 encoded data 
+	// Base64 encoded data
 	std::string source(data, length);
 	DWORD dwFlags = CRYPT_STRING_BASE64;
 	DWORD binarySize = 0;
@@ -96,15 +84,12 @@ __declspec(dllexport) std::string Base64Decoder(char *data, int length)
 	if (!CryptStringToBinary(source.c_str(), 0, dwFlags,
 							 reinterpret_cast<LPBYTE>(&binaryData[0]), &binarySize, nullptr, nullptr))
 	{
+		sprintf_s(msg, sizeof(msg) - strlen(msg), "Function Name:\n\tBase64Decoder\nBrief:\n\tDecode the input string with Base64.\n"
+												  "Parameters:\n\tdata, char*, Pointer. point to the encoded data;\n\tlength, int, length of the data;\n"
+												  "Return:\n\tvoid\n Argument:\n\tdata = %p\n\tlength = %d\n",
+				  data, length);
 		sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Decoded result: Failed to decode Base64 data. \nError code: %ld\n", GetLastError());
-	}
-	else
-	{
-		sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Done!\n");
-	}
-	if (s_DebugCallback)
 		DebugPrint(msg);
-	else
-		std::cout << std::string(msg) << std::endl;
+	}
 	return binaryData;
 }

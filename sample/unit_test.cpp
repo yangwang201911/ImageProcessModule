@@ -5,16 +5,44 @@
 #include <opencv2/opencv.hpp>
 #include <cutImageAlgr.h>
 #include <templateMatcher.h>
+#include <rotateTransform.h>
 using namespace std;
 using namespace cv;
 
 void test_base64_text();
 void test_base64_image_show(std::string path);
 void test_base64_image_matcher(std::string image, std::string target);
-int main()
+void test_base64_image_rotate_transform(std::string image);
+int main(int argc, char *argv[])
 {
-    test_base64_text();
-    test_base64_image_matcher("image.jpg", "target.jpg");
+    int index = -1;
+    do
+    {
+        std::cout << "Function list: \n\t1. Base64 encoder and decoder."
+                  << "\n\t2. Show image via encoded/decoded data."
+                  << "\n\t3. Image template matcher."
+                  << "\n\t4. Image rotating transform."
+                  << "\nWhich one you want to test: ";
+        std::cin >> index;
+    } while (0);
+
+    switch (index)
+    {
+    case 1:
+        test_base64_text();
+        break;
+    case 2:
+        test_base64_image_show("image.jpg");
+        break;
+    case 3:
+        test_base64_image_matcher("image.jpg", "target.jpg");
+        break;
+    case 4:
+        test_base64_image_rotate_transform("rotate_test.jpg");
+        break;
+    default:
+        break;
+    }
     return 0;
 }
 
@@ -49,7 +77,7 @@ void test_base64_image_matcher(std::string image, std::string target)
     vector<uchar> data;
     imencode(".jpg", img, data);
     string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
-    
+
     data.clear();
     Mat targetMat = imread(target);
     imencode(".jpg", targetMat, data);
@@ -58,4 +86,15 @@ void test_base64_image_matcher(std::string image, std::string target)
     int loc_y = -1;
     auto quality = MatchTarget(&encodedImg[0], encodedImg.size(), &encodedTarget[0], encodedTarget.size(), loc_x, loc_y);
     std::cout << "Quality: " << quality << "\tlocation: " << loc_x << "x" << loc_y << std::endl;
+}
+
+void test_base64_image_rotate_transform(std::string image)
+{
+    Mat img = imread(image);
+    vector<uchar> data;
+    imencode(".jpg", img, data);
+    string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
+    double angle = 0.0;
+    int ret = RotateTransform(&encodedImg[0], encodedImg.size(), angle);
+    std::cout << "Angle: " << angle << std::endl;
 }
