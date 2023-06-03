@@ -15,6 +15,10 @@ if(OpenCV_FOUND)
     target_link_libraries(Myimageops ${OpenCV_LIBS} Crypt32)
 endif()
 
+set_target_properties(Myimageops PROPERTIES
+    OUTPUT_NAME "Myimageops"
+)
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Myimageops PROPERTY CXX_STANDARD 20)
 endif()
