@@ -41,25 +41,6 @@ extern "C"
 		DebugPrint(msg);
 	}
 
-	// Template matcher
-	__declspec(dllexport) int MatchTarget(char *image, int image_size, char *target, int target_size, int &loc_x, int &loc_y)
-	{
-		int quality = -1;
-		char msg[256] = "";
-		sprintf_s(msg, sizeof(msg) - strlen(msg), "Image length: %d\nTarget length: %d\n", image_size, target_size);
-		loc_x = -1;
-		loc_y = -1;
-		std::string imageData = Base64Decoder(image, image_size);
-		vector<uchar> decodedImage(imageData.begin(), imageData.end());
-		cv::Mat decodedMat = imdecode(decodedImage, cv::IMREAD_COLOR);
-		loc_x = decodedMat.rows / 2;
-		loc_y = decodedMat.cols / 2;
-		sprintf_s(msg, sizeof(msg) - strlen(msg), "Image size: %d x %d\nTarget loc: (%d,%d)\n", decodedMat.rows, decodedMat.cols, loc_x, loc_y);
-		DebugPrint(msg);
-		//cv::imshow("image", decodedMat);
-		//cv::waitKey(0);
-		return quality;
-	}
 }
 
 __declspec(dllexport) std::string Base64Encoder(char *data, int length)
