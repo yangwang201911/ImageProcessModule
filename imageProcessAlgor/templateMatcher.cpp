@@ -24,7 +24,7 @@ extern "C"
 		vector<uchar> decodedTarget(targetData.begin(), targetData.end());
 		cv::Mat targetMat = imdecode(decodedTarget, cv::IMREAD_COLOR);
 
-        // TODO: implement the image matcher here
+		// TODO: implement the image matcher here
 
 		loc_x = imageMat.rows / 2;
 		loc_y = imageMat.cols / 2;
