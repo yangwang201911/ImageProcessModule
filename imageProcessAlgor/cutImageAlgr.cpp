@@ -28,6 +28,10 @@ extern "C"
 		{
 			s_DebugCallback(message);
 		}
+		else
+		{
+			std::cout << message << std::endl;
+		}
 	}
 
 	// Basic function test. Just check if the debug informate output works well.

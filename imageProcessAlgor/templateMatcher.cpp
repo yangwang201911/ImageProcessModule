@@ -18,7 +18,7 @@ extern "C"
 		loc_x = -1;
 		loc_y = -1;
 		std::string imageData = Base64Decoder(image, imageSize);
-		vector<uchar> decodedImage(imageData.begin(), imageData.end());
+		std::vector<uchar> decodedImage(imageData.begin(), imageData.end());
 		cv::Mat imageMat = imdecode(decodedImage, cv::IMREAD_COLOR);
 
 		std::string targetData = Base64Decoder(target, targetSize);

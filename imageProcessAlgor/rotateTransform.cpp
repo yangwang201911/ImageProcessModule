@@ -15,7 +15,7 @@ extern "C"
         char msg[256] = "";
         sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling RotateTransform()....\n");
 		std::string imageData = Base64Decoder(image, imageSize);
-		vector<uchar> decodedImage(imageData.begin(), imageData.end());
+		std::vector<uchar> decodedImage(imageData.begin(), imageData.end());
 		cv::Mat srcImage = imdecode(decodedImage, cv::IMREAD_COLOR);
         if (!srcImage.data)
         {
