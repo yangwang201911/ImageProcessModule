@@ -8,6 +8,7 @@
 #include <rotateTransform.h>
 #include <pixelSizeMeter.h>
 #include <cutBaseLineDetection.h>
+#include <cutTraceDetection.h>
 using namespace std;
 using namespace cv;
 
@@ -17,6 +18,7 @@ void test_base64_image_matcher(std::string image, std::string target);
 void test_base64_image_rotate_transform(std::string image);
 void test_image_pixel_size_measure(std::string image);
 void test_cut_baseline_detection(std::string image);
+void test_cut_trace_validation(std::string image);
 int main(int argc, char *argv[])
 {
     int index = -1;
@@ -28,6 +30,7 @@ int main(int argc, char *argv[])
                   << "\n\t4. Image rotating transform."
                   << "\n\t5. Image pixel size measurement."
                   << "\n\t6. Cut baseline detection."
+                  << "\n\t7. Cut trace validation."
                   << "\nWhich one you want to test: ";
         std::cin >> index;
     } while (0);
@@ -51,6 +54,9 @@ int main(int argc, char *argv[])
         break;
     case 6:
         test_cut_baseline_detection("image.jpg");
+        break;
+    case 7:
+        test_cut_trace_validation("image.jpg");
         break;
     default:
         break;
@@ -132,4 +138,19 @@ void test_cut_baseline_detection(std::string image)
     int delta_y = -1;
     int ret = CutLineDetection(&encodedImg[0], encodedImg.size(), delta_x, delta_y);
     std::cout << "Delta X: " << delta_x << "\tDelta Y: " << delta_y << std::endl;
+}
+
+void test_cut_trace_validation(std::string image)
+{
+    Mat img = imread(image);
+    vector<uchar> data;
+    imencode(".jpg", img, data);
+    string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
+
+    double traceAngle = 0.0;
+    int traceCenterOffset = 0;
+    int tranceWidth = -1;
+    int maxTraceWidth = -1;
+    int maxArea = -1;
+    int ret = CutTraceDetection(&encodedImg[0], encodedImg.size(), traceAngle, traceCenterOffset, tranceWidth, maxTraceWidth, maxArea);
 }
