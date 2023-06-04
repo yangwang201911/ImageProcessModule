@@ -26,12 +26,12 @@ extern "C"
             return -1;
         }
 
-		// TODO: implement the pixel size measurement here
+        // TODO: implement the pixel size measurement here
 
         pixelSize = 15;
-		sprintf_s(msg, sizeof(msg) - strlen(msg), "Pixel Size: %d\n", pixelSize);
+        sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Pixel Size: %d\n", pixelSize);
         sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling PixelSizeMeasure()....Done\n");
-		DebugPrint(msg);
+        DebugPrint(msg);
         return 0;
     }
 }

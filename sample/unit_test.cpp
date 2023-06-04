@@ -6,6 +6,8 @@
 #include <cutImageAlgr.h>
 #include <templateMatcher.h>
 #include <rotateTransform.h>
+#include <pixelSizeMeter.h>
+#include <cutBaseLineDetection.h>
 using namespace std;
 using namespace cv;
 
@@ -13,6 +15,8 @@ void test_base64_text();
 void test_base64_image_show(std::string path);
 void test_base64_image_matcher(std::string image, std::string target);
 void test_base64_image_rotate_transform(std::string image);
+void test_image_pixel_size_measure(std::string image);
+void test_cut_baseline_detection(std::string image);
 int main(int argc, char *argv[])
 {
     int index = -1;
@@ -22,6 +26,8 @@ int main(int argc, char *argv[])
                   << "\n\t2. Show image via encoded/decoded data."
                   << "\n\t3. Image template matcher."
                   << "\n\t4. Image rotating transform."
+                  << "\n\t5. Image pixel size measurement."
+                  << "\n\t6. Cut baseline detection."
                   << "\nWhich one you want to test: ";
         std::cin >> index;
     } while (0);
@@ -39,6 +45,12 @@ int main(int argc, char *argv[])
         break;
     case 4:
         test_base64_image_rotate_transform("rotate_test.jpg");
+        break;
+    case 5:
+        test_image_pixel_size_measure("image.jpg");
+        break;
+    case 6:
+        test_cut_baseline_detection("image.jpg");
         break;
     default:
         break;
@@ -97,4 +109,27 @@ void test_base64_image_rotate_transform(std::string image)
     double angle = 0.0;
     int ret = RotateTransform(&encodedImg[0], encodedImg.size(), angle);
     std::cout << "Angle: " << angle << std::endl;
+}
+
+void test_image_pixel_size_measure(std::string image)
+{
+    Mat img = imread(image);
+    vector<uchar> data;
+    imencode(".jpg", img, data);
+    string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
+    int pixelSize = 0;
+    int ret = PixelSizeMeasure(&encodedImg[0], encodedImg.size(), 8, pixelSize);
+    std::cout << "Pixel Size: " << pixelSize << std::endl;
+}
+
+void test_cut_baseline_detection(std::string image)
+{
+    Mat img = imread(image);
+    vector<uchar> data;
+    imencode(".jpg", img, data);
+    string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
+    int delta_x = -1;
+    int delta_y = -1;
+    int ret = CutLineDetection(&encodedImg[0], encodedImg.size(), delta_x, delta_y);
+    std::cout << "Delta X: " << delta_x << "\tDelta Y: " << delta_y << std::endl;
 }
