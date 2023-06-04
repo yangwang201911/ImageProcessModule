@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         test_base64_image_matcher("image.jpg", "target.jpg");
         break;
     case 4:
-        test_base64_image_rotate_transform("rotate_test.jpg");
+        test_base64_image_rotate_transform("image.jpg");
         break;
     case 5:
         test_image_pixel_size_measure("image.jpg");
