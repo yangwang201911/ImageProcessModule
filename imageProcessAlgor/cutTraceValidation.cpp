@@ -5,18 +5,18 @@
 #include <iostream>
 #include <stdio.h>
 #include "cutImageAlgr.h"
-#include "cutTraceDetection.h"
+#include "cutTraceValidation.h"
 
 using namespace cv;
 
 extern "C"
 {
-    __declspec(dllexport) int CutTraceDetection(char *image, int imageSize,
-                                                double &traceAngle,
-                                                int &traceCenterOffset,
-                                                int &tranceWidth,
-                                                int &maxTraceWidth,
-                                                int &maxArea)
+    __declspec(dllexport) int CutTraceValidation(char *image, int imageSize,
+                                                 double &traceAngle,
+                                                 int &traceCenterOffset,
+                                                 int &tranceWidth,
+                                                 int &maxTraceWidth,
+                                                 int &maxArea)
     {
         char msg[256] = "";
         sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling CutTraceDetection()....\n");

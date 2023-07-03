@@ -9,12 +9,11 @@ using namespace cv;
 using namespace std;
 extern "C"
 {
-	__declspec(dllexport) int CutLineDetection(char *image, int imageSize, int& delta_x, int& delta_y)
+	__declspec(dllexport) int CutTraceDetection(char *image, int imageSize, float& quality)
     {
         char msg[256] = "";
         sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling CutLineDetection()....\n");
-		delta_x = -1;
-		delta_y = -1;
+        quality = -1.0;
 		std::string imageData = Base64Decoder(image, imageSize);
 		std::vector<uchar> decodedImage(imageData.begin(), imageData.end());
 		cv::Mat imageMat = imdecode(decodedImage, cv::IMREAD_COLOR);
@@ -28,10 +27,8 @@ extern "C"
 
 		// TODO: implement the cut line detection here
 
-        delta_x = 123;
-        delta_y = 222;
-		sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Delta X: %d\tDelta Y: %d\n", delta_x, delta_y);
-        sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling MatchTarget()....Done\n");
+		sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Cut trace quality: %.2f\n", quality);
+        sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling CutLineDetection()....Done\n");
 		DebugPrint(msg);
         return 0;
     }

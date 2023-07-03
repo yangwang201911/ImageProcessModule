@@ -17,10 +17,10 @@ extern "C"
      * @param maxArea                   the maximum pixel number inside the curved area
      * @return return 0 if successful, otherwise non-zero will return.
      */
-    __declspec(dllexport) int CutTraceDetection(char *image, int imageSize,
-                                                double &angle,
-                                                int &traceCenterOffset,
-                                                int &tranceWidth,
-                                                int &maxTraceWidth,
-                                                int &maxArea);
+    __declspec(dllexport) int CutTraceValidation(char *image, int imageSize,
+                                                 double &angle,
+                                                 int &traceCenterOffset,
+                                                 int &tranceWidth,
+                                                 int &maxTraceWidth,
+                                                 int &maxArea);
 }

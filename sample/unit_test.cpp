@@ -9,7 +9,7 @@
 #include <rotateTransform.h>
 #include <pixelSizeMeter.h>
 #include <cutBaseLineDetection.h>
-#include <cutTraceDetection.h>
+#include <cutTraceValidation.h>
 #include <autoAdjustQuality.h>
 using namespace std;
 using namespace cv;
@@ -117,11 +117,12 @@ void test_base64_image_matcher(std::string image, std::string target)
     int matched_x = 0;
     int matched_y = 0;
     auto quality = MatchTarget(&encodedImg[0], encodedImg.size(), &encodedTarget[0], encodedTarget.size(), original_x, original_y, matched_x, matched_y, NULL);
-    if (quality < 0) {
+    if (quality < 0)
+    {
         std::cout << "Error happened during searhing the template image.\n";
         return;
     }
-    cv::rectangle(img, cv::Point(matched_x, matched_y), cv::Point(matched_x+ targetMat.cols, matched_y + targetMat.rows), cv::Scalar(0, 255, 0), 2);
+    cv::rectangle(img, cv::Point(matched_x, matched_y), cv::Point(matched_x + targetMat.cols, matched_y + targetMat.rows), cv::Scalar(0, 255, 0), 2);
     std::ostringstream text;
     text << "Quality: " << quality << " X: " << matched_x - original_x << " Y: " << matched_y - original_y;
     cv::putText(img, text.str(), cv::Point(50, 50), cv::FONT_HERSHEY_SIMPLEX, 2, cv::Scalar(0, 255, 0), 5);
@@ -143,15 +144,8 @@ void test_base64_image_rotate_transform(std::string image)
     imencode(".jpg", img, data);
     string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
     double angle = 0.0;
-    int ret = RotateTransform(&encodedImg[0], encodedImg.size(), angle, NULL);
+    int ret = RotateTransform(&encodedImg[0], encodedImg.size(), angle);
     std::cout << "Angle: " << angle << std::endl;
-    cv::Mat rotate_img;
-    cv::Point2f center((1.0 * img.cols) / 2.0, (1.0 * img.rows) / 2.0);
-    cv::Mat rotation_matrix = cv::getRotationMatrix2D(center, angle, 1.0);
-    cv::warpAffine(img, rotate_img, rotation_matrix, img.size());
-    cv::imshow("soure Image", img);
-    cv::imshow("rotated Image", rotate_img);
-    cv::waitKey(0);
 }
 
 void test_image_pixel_size_measure(std::string image)
@@ -171,10 +165,9 @@ void test_cut_baseline_detection(std::string image)
     vector<uchar> data;
     imencode(".jpg", img, data);
     string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
-    int delta_x = -1;
-    int delta_y = -1;
-    int ret = CutLineDetection(&encodedImg[0], encodedImg.size(), delta_x, delta_y);
-    std::cout << "Delta X: " << delta_x << "\tDelta Y: " << delta_y << std::endl;
+    float quality = -1.0;
+    int ret = CutTraceDetection(&encodedImg[0], encodedImg.size(), quality);
+    std::cout << "Quality: " << quality << std::endl;
 }
 
 void test_cut_trace_validation(std::string image)
@@ -189,15 +182,17 @@ void test_cut_trace_validation(std::string image)
     int tranceWidth = -1;
     int maxTraceWidth = -1;
     int maxArea = -1;
-    int ret = CutTraceDetection(&encodedImg[0], encodedImg.size(), traceAngle, traceCenterOffset, tranceWidth, maxTraceWidth, maxArea);
+    int ret = CutTraceValidation(&encodedImg[0], encodedImg.size(), traceAngle, traceCenterOffset, tranceWidth, maxTraceWidth, maxArea);
 }
-void test_focus_quality_validation(std::string image) {
+void test_focus_quality_validation(std::string image)
+{
     Mat img = imread(image);
     float quality = FocusQuality(img);
     std::cout << "Focus Quality: " << quality << std::endl;
     return;
 }
-void test_bright_quality_validation(std::string image) {
+void test_bright_quality_validation(std::string image)
+{
     Mat img = imread(image);
     float quality = BrightQuality(img);
     std::cout << "Brightness Quality: " << quality << std::endl;
