@@ -143,7 +143,7 @@ void test_base64_image_rotate_transform(std::string image)
     vector<uchar> data;
     imencode(".jpg", img, data);
     string encodedImg = Base64Encoder(reinterpret_cast<char *>(data.data()), data.size());
-    double angle = 0.0;
+    float angle = 0.0;
     int ret = RotateTransform(&encodedImg[0], encodedImg.size(), angle);
     std::cout << "Angle: " << angle << std::endl;
 }
