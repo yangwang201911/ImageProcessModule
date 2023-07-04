@@ -12,6 +12,7 @@ extern "C"
     __declspec(dllexport) int RotateTransform(char *image, int imageSize, float& rotate_angle)
     {
         char msg[256] = "";
+        rotate_angle = -360.0;
         sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling RotateTransform()....\n");
         std::string imageData = Base64Decoder(image, imageSize);
         std::vector<uchar> decodedImage(imageData.begin(), imageData.end());
@@ -57,6 +58,12 @@ extern "C"
         Point pt1(cvRound(x0 + 1000 * (-b)), cvRound(y0 + 1000 * (a)));
         Point pt2(cvRound(x0 - 1000 * (-b)), cvRound(y0 - 1000 * (a)));
         line(srcImage, pt1, pt2, Scalar(0, 255, 255), 20, LINE_AA);
+        if (rotate_angle == -360.0) {
+            sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Failed to calculate the rotate_angle\n");
+            sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling RotateTransform()....Done\n");
+            DebugPrint(msg);
+            return -1;
+        }
         if (rotate_angle > 45)
         {
             rotate_angle = -90 + rotate_angle;
@@ -66,6 +73,16 @@ extern "C"
             rotate_angle = 90 + rotate_angle;
         }
         sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Rotate rotate_angle: %.2f\n", rotate_angle);
+
+        // Draw the square in the center of the image
+        int centerX = srcImage.cols / 2;
+        int centerY = srcImage.rows / 2;
+        int size = 100;
+        int halfSize = size / 2;
+        cv::rectangle(srcImage, Point(centerX - halfSize, centerY - halfSize),
+                  Point(centerX + halfSize, centerY + halfSize), Scalar(0, 255, 0), 5);
+        line(srcImage, Point(centerX - halfSize, centerY), Point(centerX + halfSize, centerY), Scalar(0, 255, 0), 5);
+        line(srcImage, Point(centerX, centerY - halfSize), Point(centerX, centerY + halfSize), Scalar(0, 255, 0), 5);
         sprintf_s(msg + strlen(msg), sizeof(msg) - strlen(msg), "Calling RotateTransform()....Done\n");
         DebugPrint(msg);
         return 0;
